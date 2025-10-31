@@ -1,1 +1,1 @@
-# Linguistics-and-Computation---Final-Project
+# Linguistics and Computation LING 2270 - Final Project
