@@ -7,7 +7,7 @@ import random
 def load_opus100_pair(
     lang_pair: str,
     split: str = "train",
-    max_samples: int = 2000,
+    max_samples: int = 20,
     seed: int = 42,
 ) -> Tuple[List[str], List[str]]:
     """

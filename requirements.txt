@@ -1,0 +1,22 @@
+# Core ML + Transformers stack
+torch>=2.1.0
+transformers>=4.36.0
+sentencepiece>=0.1.99
+
+# Datasets & evaluation
+datasets>=2.18.0
+sacrebleu>=2.3.1
+
+# COMET metric
+unbabel-comet>=2.0.3
+pytorch-lightning>=2.0.0
+
+# Data analysis
+pandas>=2.1.0
+numpy>=1.26.0
+scipy>=1.11.0
+statsmodels>=0.14.0
+
+# Utilities
+tqdm>=4.66.0
+protobuf>=4.23.0

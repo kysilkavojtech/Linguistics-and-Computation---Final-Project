@@ -11,7 +11,7 @@ from metrics import compute_bleu, compute_chrf, compute_comet
 
 def evaluate_language(
     lang_code: str,
-    max_samples: int = 2000,
+    max_samples: int = 20,
     split: str = "train",
     device: str = None,
 ) -> Dict[str, Any]:

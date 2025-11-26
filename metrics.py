@@ -1,9 +1,7 @@
-# metrics.py
-from typing import List, Tuple
+from typing import List
 import sacrebleu
 from comet import download_model, load_from_checkpoint
 
-# load COMET once and reuse
 COMET_MODEL_PATH = download_model("Unbabel/wmt22-comet-da")
 COMET_MODEL = load_from_checkpoint(COMET_MODEL_PATH)
 
@@ -26,8 +24,19 @@ def compute_comet(
     use_gpu: bool = False,
 ) -> float:
     data = [{"src": s, "mt": m, "ref": r} for s, m, r in zip(src, mt, ref)]
-    gpus = 1 if use_gpu else 0
-    seg_scores, sys_score = COMET_MODEL.predict(
-        data, batch_size=batch_size, gpus=gpus
+
+    result = COMET_MODEL.predict(
+        data,
+        batch_size=batch_size,
+        gpus=1 if use_gpu else 0,
+        num_workers=1,   # important for macOS
     )
+
+    # New-style COMET (dict with 'system_score')
+    if isinstance(result, dict):
+        sys_score = result["system_score"]
+    else:
+        # Old-style COMET (tuple: (seg_scores, sys_score))
+        seg_scores, sys_score = result
+
     return float(sys_score)
