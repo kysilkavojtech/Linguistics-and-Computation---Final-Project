@@ -84,8 +84,3 @@ Class-wise avg probs:
   fusional: 0.915
   isolating: 0.073
 ```
-
-Notes and tips
-- Ensure `models/lid.176.bin` is present if running LID-based steps.
-- Run `pip install -r requirements.txt` inside your active virtualenv to avoid missing-package errors.
-- For reproducibility, pin package versions in `requirements.txt` and use the virtual environment above.
