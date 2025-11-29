@@ -1,14 +1,28 @@
+# run_language_eval.py
+
 import os
 import pandas as pd
 import torch
+import math
 from config import LANG_CONFIG
 from data_loading import load_opus100_pair
 from mt_models import MTTranslator
 from metrics import compute_bleu, compute_chrf, compute_comet
 
+def _clean_list(xs):
+    cleaned = []
+    for x in xs:
+        # drop NaNs / None
+        if x is None:
+            continue
+        if isinstance(x, float) and math.isnan(x):
+            continue
+        cleaned.append(str(x))
+    return cleaned
+
 def evaluate_language(
     lang_code: str,
-    max_samples: int = 5000,
+    max_samples: int = 500,
     split: str = "train",
     device: str = None,
 ) -> dict:
@@ -25,15 +39,23 @@ def evaluate_language(
     if os.path.exists(cache_path):
         print(f"Loading cached translations from {cache_path} ...")
         df_cache = pd.read_csv(cache_path)
-        src_texts = df_cache["src"].tolist()
-        ref_texts = df_cache["ref"].tolist()
-        mt_texts  = df_cache["mt"].tolist()
+
+        # Drop rows where any of src/ref/mt is missing
+        df_cache = df_cache.dropna(subset=["src", "ref", "mt"])
+
+        src_texts = _clean_list(df_cache["src"].tolist())
+        ref_texts = _clean_list(df_cache["ref"].tolist())
+        mt_texts  = _clean_list(df_cache["mt"].tolist())
     else:
         # --- 3. Otherwise, load data + run MT and cache it ---
         print(f"Loading data for {pair} (split={split}, max_samples={max_samples})...")
         src_texts, ref_texts = load_opus100_pair(
             pair, split=split, max_samples=max_samples, seed=42
         )
+
+        # deal with de-en, for instance (make src always store english)
+        if pair.split('-')[0] != "en":
+            src_texts, ref_texts = ref_texts, src_texts
 
         print(f"Running MT for {pair} on device={device} ...")
         translator = MTTranslator(pair, device=device)

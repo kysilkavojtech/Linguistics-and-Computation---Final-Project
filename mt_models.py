@@ -5,17 +5,6 @@ from transformers import M2M100Tokenizer, M2M100ForConditionalGeneration
 import torch
 from tqdm import tqdm
 
-# Map your language codes to M2M100 language codes.
-# For these languages, they are the same ISO codes.
-M2M_LANG_CODES = {
-    "tr": "tr",   # Turkish
-    "fi": "fi",   # Finnish
-    "zh": "zh",   # Chinese
-    "vi": "vi",   # Vietnamese
-    "es": "es",   # Spanish
-    "ru": "ru",   # Russian
-}
-
 
 class MTTranslator:
     def __init__(self, lang_pair: str, device: str = "cpu"):
@@ -24,14 +13,13 @@ class MTTranslator:
         We always assume source = English ('en'), target = the other side.
         """
         src, tgt = lang_pair.split("-")
+
+        # Some corpora in OPUS-100 are in reverse notation
         if src != "en":
-            raise ValueError(f"Expected English as source, got {src}")
+            src, tgt = tgt, src
 
-        if tgt not in M2M_LANG_CODES:
-            raise ValueError(f"No M2M language mapping for target '{tgt}'")
-
-        self.src_lang = "en"
-        self.tgt_lang = M2M_LANG_CODES[tgt]
+        self.src_lang = src
+        self.tgt_lang = tgt
 
         # Load single multilingual model for all pairs
         model_name = "facebook/m2m100_418M"
