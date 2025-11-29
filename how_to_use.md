@@ -89,7 +89,3 @@ Notes and tips
 - Ensure `models/lid.176.bin` is present if running LID-based steps.
 - Run `pip install -r requirements.txt` inside your active virtualenv to avoid missing-package errors.
 - For reproducibility, pin package versions in `requirements.txt` and use the virtual environment above.
-
-Next steps (optional)
-- Add a `Makefile` or `scripts/` folder with convenience commands.
-- I can run one of the scripts here to verify behavior in your environment.
