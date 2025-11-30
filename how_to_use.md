@@ -9,6 +9,8 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
+Importantly, the `comet` library does not work reliably in newer versions of Python. `python 3.10` was used in building this project.
+
 2. Install Python dependencies:
 
 ```bash
