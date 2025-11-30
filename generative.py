@@ -22,7 +22,11 @@ mt_texts = translator.translate_batch(en_texts, batch_size=8)
 
 # -----------------------
 
+import torch
 from metrics import compute_bleu, compute_chrf, compute_comet
+from build_typology_dataset import compute_sentence_comet
+
+use_gpu = torch.cuda.is_available()
 
 bleu = compute_bleu(mt_texts, unk_texts)
 chrf = compute_chrf(mt_texts, unk_texts)
@@ -31,17 +35,12 @@ comet = compute_comet(
     mt_texts,
     unk_texts,
     batch_size=16,
-    use_gpu=True,   # or False, depending on your setup
+    use_gpu=use_gpu,
 )
 
 print("BLEU:", bleu)
 print("chrF:", chrf)
 print("COMET:", comet)
-
-import torch
-from build_typology_dataset import compute_sentence_comet
-
-use_gpu = torch.cuda.is_available()
 
 comet_sentence_scores = compute_sentence_comet(
     en_texts,
@@ -93,9 +92,8 @@ for src, ref, mt, comet_sentence in zip(en_texts, unk_texts, mt_texts, comet_sen
         "src_ttr": src_ttr,
         "ref_ttr": ref_ttr,
         "mt_ttr": mt_ttr,
-        # NEW: sentence-level COMET
         "comet_sentence": comet_sentence,
-        # NEW: corpus-level metrics (same for every sentence)
+        # these are the same for every sentence - a very strong signal
         "bleu_corpus": bleu,
         "chrf_corpus": chrf,
         "comet_corpus": comet,
@@ -145,7 +143,7 @@ from collections import Counter
 count = Counter(y_pred)
 pred_typology_majority = count.most_common(1)[0][0]
 
-# Optionally, average probabilities to get a softer global prediction
+# (Optionally) average probabilities to get a softer global prediction
 avg_probs = probs.mean(axis=0)
 global_pred_idx = int(np.argmax(avg_probs))
 pred_typology_prob = classes[global_pred_idx]
