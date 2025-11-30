@@ -34,7 +34,7 @@ def compute_comet(
         num_workers=1,   # important for macOS
     )
 
-    # New-style COMET (dict with 'system_score')
+    # New-style COMET (dict with 'system_score') - confusingly appears to switch
     if isinstance(result, dict):
         sys_score = result["system_score"]
     else:
