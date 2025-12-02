@@ -32,6 +32,13 @@ class MTTranslator:
         outputs: List[str] = []
         for i in tqdm(range(0, len(src_texts), batch_size), desc="Translating"):
             batch = src_texts[i: i + batch_size]
+            
+            # Ensure all items in batch are valid strings
+            batch = [str(text) if text is not None else "" for text in batch]
+            batch = [text for text in batch if text.strip()]  # Remove empty strings
+            
+            if not batch:
+                continue
 
             # set the source language
             self.tokenizer.src_lang = self.src_lang

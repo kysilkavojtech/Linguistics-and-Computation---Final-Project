@@ -10,7 +10,6 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # Updated mystery languages:
 MYSTERY_PAIRS = {
     "kk": "en-kk",  # Kazakh  (agglutinative)
-    "ha": "en-ha",  # Hausa   (analytic / isolating-leaning)
     "cs": "cs-en",  # Czech   (fusional)
 }
 
