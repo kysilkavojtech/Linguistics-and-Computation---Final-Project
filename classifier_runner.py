@@ -1,7 +1,7 @@
 import pandas as pd
 from lid import majority_lang
 
-df = pd.read_csv("mystery_corpora_unseen/mystery_kk.csv")  # columns: 'en', 'unk'
+df = pd.read_csv("mystery_corpora_unseen/mystery_cs.csv")  # columns: 'en', 'unk'
 
 # Clean data: drop rows with NaN and ensure strings
 df = df.dropna(subset=["en", "unk"])

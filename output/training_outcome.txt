@@ -1,0 +1,17 @@
+# run with a 80/20 train/test split (8 languages per each of 3 categories, 500 lines per language)
+
+=== Classification report ===
+               precision    recall  f1-score   support
+
+agglutinative       0.79      0.71      0.75       799
+     fusional       1.00      1.00      1.00       800
+    isolating       0.74      0.81      0.77       800
+
+     accuracy                           0.84      2399
+    macro avg       0.84      0.84      0.84      2399
+ weighted avg       0.84      0.84      0.84      2399
+
+=== Confusion matrix (rows=true, cols=pred) ===
+[[568   0 231]
+ [  0 800   0]
+ [154   0 646]]

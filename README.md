@@ -1,5 +1,4 @@
 # Morphological Typology and Machine Translation Quality  
-**Victoria Duran-Valero, Vojtech Kysilka, Ali Otuzoglu**
 
 ## Research Question  
 Our project investigates whether the quality of Machine Translation (MT) differs significantly across languages with varying levels of morphological richness—specifically **agglutinative**, **isolating**, **fusional**, and **polysynthetic** languages. We aim to determine:

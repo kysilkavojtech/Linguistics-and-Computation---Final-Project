@@ -2,9 +2,7 @@
 
 from typing import List
 from transformers import M2M100Tokenizer, M2M100ForConditionalGeneration
-import torch
 from tqdm import tqdm
-
 
 class MTTranslator:
     def __init__(self, lang_pair: str, device: str = "cpu"):
