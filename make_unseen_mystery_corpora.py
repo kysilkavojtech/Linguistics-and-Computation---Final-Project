@@ -1,4 +1,4 @@
-# make_unseen_mystery_corpora.py
+# make_unseen_mystery_corpora.py -- Preliminary testing helper
 
 import os
 import pandas as pd
@@ -7,7 +7,7 @@ from data_loading import load_opus100_pair
 OUT_DIR = "mystery_corpora_unseen"
 os.makedirs(OUT_DIR, exist_ok=True)
 
-# Updated mystery languages:
+# Random mystery languages for testing:
 MYSTERY_PAIRS = {
     "kk": "en-kk",  # Kazakh  (agglutinative)
     "cs": "cs-en",  # Czech   (fusional)

@@ -30,6 +30,7 @@ def majority_lang(texts, min_conf: float = 0.7):
             confs.append(conf)
 
     if not counts:
+        # TODO: Add option to manually add
         raise ValueError("No high-confidence LID predictions.")
 
     most_common_lang, n = counts.most_common(1)[0]

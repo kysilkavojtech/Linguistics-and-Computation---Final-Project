@@ -9,6 +9,8 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
+Importantly, the `comet` library does not work reliably in newer versions of Python. `python 3.10` was used in building this project.
+
 2. Install Python dependencies:
 
 ```bash
@@ -84,12 +86,3 @@ Class-wise avg probs:
   fusional: 0.915
   isolating: 0.073
 ```
-
-Notes and tips
-- Ensure `models/lid.176.bin` is present if running LID-based steps.
-- Run `pip install -r requirements.txt` inside your active virtualenv to avoid missing-package errors.
-- For reproducibility, pin package versions in `requirements.txt` and use the virtual environment above.
-
-Next steps (optional)
-- Add a `Makefile` or `scripts/` folder with convenience commands.
-- I can run one of the scripts here to verify behavior in your environment.
