@@ -26,15 +26,40 @@ curl -O https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
 cd ..
 ```
 
-Step 1 — Build training data (one-time)
+Step 1 — Generate cache files and run MT evaluation
+
+**Important:** This step must be run before building the training dataset.
+
+```bash
+python run_language_eval.py
+```
+
+This script:
+- Loads parallel corpora from OPUS-100 for each language in `config.py`
+- Runs machine translation using M2M100
+- Computes BLEU, chrF, and COMET metrics
+- Saves cached translations to `cache/` directory (e.g., `cache/en-tr_n500_train.csv`)
+- Outputs: `mt_typology_results.csv` with evaluation results
+
+**Note:** This step can take significant time depending on your hardware (GPU recommended).
+
+Step 2 — Build training data (one-time)
+
+**Prerequisite:** Step 1 must be completed first (cache files must exist).
 
 ```bash
 python build_typology_dataset.py
 ```
 
-Generates: `data/typology_training_data.csv`
+This script:
+- Reads cached MT outputs from `cache/` directory
+- Computes sentence-level features (token counts, chars per token, TTR, etc.)
+- Computes sentence-level COMET scores
+- Generates: `data/typology_training_data.csv`
 
-Step 2 — Train the typology classifier
+Step 3 — Train the typology classifier
+
+**Prerequisite:** Step 2 must be completed first (`data/typology_training_data.csv` must exist).
 
 ```bash
 python train_typology_classifier.py
@@ -44,7 +69,7 @@ Outputs:
 - `models/typology_clf.joblib`
 - Console: accuracy, classification report, confusion matrix
 
-Step 3 (Optional) — Generate test corpora (for testing purposes if the user wants to try Step 4 based on OPUS-100 data)
+Step 4 (Optional) — Generate test corpora (for testing purposes if the user wants to try Step 5 based on OPUS-100 data)
 
 ```bash
 python make_unseen_mystery_corpora.py
@@ -56,9 +81,11 @@ Creates files in `mystery_corpora_unseen/`, e.g.:
 
 Each file contains ~500 English / unknown-language sentence pairs.
 
-Step 4 — Predict typology for a mystery corpus
+Step 5 — Predict typology for a mystery corpus
 
-1. Edit `generative.py` so the data-loading line points to the desired file. Example:
+**Prerequisite:** Step 3 must be completed first (`models/typology_clf.joblib` must exist).
+
+1. Edit `classifier_runner.py` so the data-loading line points to the desired file. Example:
 
 ```python
 df = pd.read_csv("mystery_corpora_unseen/mystery_cs.csv")
@@ -67,10 +94,10 @@ df = pd.read_csv("mystery_corpora_unseen/mystery_cs.csv")
 2. Run the script:
 
 ```bash
-python generative.py
+python classifier_runner.py
 ```
 
-Example output (real run):
+Example output (2 real runs):
 
 ```
 fastText majority: cs
